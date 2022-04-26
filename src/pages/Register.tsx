@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +39,6 @@ export default function Register() {
 		if (success) navigate('/profile');
 	};
 
-
 	return (
 		<div className="h-full flex flex-col items-center justify-center px-4 bg-gray-100">
 			<form
@@ -47,20 +46,18 @@ export default function Register() {
 				onSubmit={onSubmitHandler}
 			>
 				<h1 className="text-center text-2xl font-medium py-2">Join to The Club 🥳</h1>
-				{
-					error && (
-						<div className="bg-red-500 text-white p-2">
-							{error.items.map((e, index) => (<p key={index}>{e.message}</p>))}
-						</div>
-					)
-				}
-				{
-					passwordError && (
-						<div className="bg-red-500 text-white p-2">
-							<p>{passwordError}</p>
-						</div>
-					)
-				}
+				{error && (
+					<div className="bg-red-500 text-white p-2">
+						{error.items.map((e, index) => (
+							<p key={index}>{e.message}</p>
+						))}
+					</div>
+				)}
+				{passwordError && (
+					<div className="bg-red-500 text-white p-2">
+						<p>{passwordError}</p>
+					</div>
+				)}
 
 				<div className="input-group">
 					<label className="block text-sm mb-1 text-gray-700" htmlFor={emailID}>
