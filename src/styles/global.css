@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-    body, html {
-        height: 100%;
-    }
-    body {
-        display: grid;
-    }
-    input:is([type="text"], [type="email"], [type="password"], [type="search"]) {
-        width: 100%;
-    }
+	body,
+	html {
+		height: 100%;
+	}
+	body {
+		display: grid;
+	}
+	input:is([type='text'], [type='email'], [type='password'], [type='search']) {
+		width: 100%;
+	}
 }
