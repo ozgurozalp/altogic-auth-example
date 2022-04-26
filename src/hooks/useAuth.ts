@@ -10,6 +10,7 @@ export default function useAuth() {
 
 	async function register(email: string, password: string) {
 		setLoading(true);
+		setError(null);
 		const { user, session, errors } = await altogic.auth.signUpWithEmail(email, password);
 		setLoading(false);
 
@@ -26,6 +27,7 @@ export default function useAuth() {
 
 	async function login(email: string, password: string) {
 		setLoading(true);
+		setError(null);
 		const { user, session, errors } = await altogic.auth.signInWithEmail(email, password);
 		setLoading(false);
 
@@ -42,6 +44,7 @@ export default function useAuth() {
 
 	async function logout() {
 		setLoading(true);
+		setError(null);
 		const { errors } = await altogic.auth.signOut();
 		setLoading(false);
 
