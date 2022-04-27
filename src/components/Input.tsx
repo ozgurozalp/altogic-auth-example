@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef, ForwardedRef } from 'react';
 import { forwardRef } from 'react';
+import type { ComponentPropsWithRef, ForwardedRef } from 'react';
 
 export interface InputProps extends ComponentPropsWithRef<'input'> {
 	className?: string;
