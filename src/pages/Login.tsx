@@ -1,7 +1,7 @@
-import useAuth from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useId, useRef } from 'react';
 import type { FormEvent } from 'react';
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 
 export default function Login() {
