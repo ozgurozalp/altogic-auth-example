@@ -11,11 +11,10 @@ export default function Button({
 	children,
 	renderAs = 'button',
 	className,
-	to,
 	...props
 }: ButtonProps) {
 	if (renderAs === 'a') {
-		const linkProps = { to, ...props } as LinkProps;
+		const linkProps = props as LinkProps;
 		return (
 			<Link
 				className={`px-4 py-2 rounded border bg-white transition-all hover:border-gray-500 ${
