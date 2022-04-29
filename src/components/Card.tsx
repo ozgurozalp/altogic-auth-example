@@ -8,7 +8,7 @@ export interface CardProps {
 export default function Card({ children, className, ...props }: CardProps) {
 	return (
 		<div
-			className={`shadow-xl rounded-2xl p-6 bg-white sm:p-8 rounded-xl ${className ?? ''}`}
+			className={`shadow-xl rounded-2xl p-6 bg-white sm:p-8 rounded-md ${className ?? ''}`}
 			{...props}
 		>
 			{children}
