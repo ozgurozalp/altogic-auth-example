@@ -1,8 +1,9 @@
-import { useEffect, useId, useRef } from 'react';
+import { useId, useRef } from 'react';
 import type { FormEvent } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
+import ShowError from '../components/ShowError';
 
 export default function Login() {
 	const email = useRef<HTMLInputElement>(null);
@@ -13,37 +14,24 @@ export default function Login() {
 	const emailID = useId();
 	const passwordID = useId();
 
-	useEffect(() => {
-		email?.current?.focus();
-		document.body.style.overflow = 'hidden';
-
-		return () => {
-			document.body.style.overflow = 'auto';
-		};
-	}, []);
-
 	const onSubmitHandler = async (e: FormEvent) => {
 		e.preventDefault();
 		if (!email.current || !password.current) return;
 
-		const success = await login(email.current.value, password.current.value);
+		const { success } = await login(email.current.value, password.current.value);
 		if (success) navigate('/profile');
 	};
 
 	return (
-		<div className="h-full flex flex-col items-center justify-center px-4 bg-gray-100">
+		<div className="h-full flex flex-col items-center justify-center px-4">
 			<form
 				className="bg-white grid gap-4 p-6 rounded w-full max-w-sm shadow-lg"
 				onSubmit={onSubmitHandler}
 			>
 				<h1 className="text-center text-2xl font-medium py-2">Welcome Back 👋🏽</h1>
-				{error && (
-					<div className="bg-red-500 text-white p-2">
-						{error.items.map((e, index) => (
-							<p key={index}>{e.message}</p>
-						))}
-					</div>
-				)}
+
+				<ShowError error={error} />
+
 				<div className="input-group">
 					<label className="block text-sm mb-1 text-gray-700" htmlFor={emailID}>
 						Email
