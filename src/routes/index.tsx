@@ -1,11 +1,12 @@
+import type { ReactElement } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Profile from '../pages/Profile';
-import type { ReactElement } from 'react';
 import Home from '../pages/Home';
 import useAuth from '../hooks/useAuth';
 import NotFound from '../pages/NotFound';
+import AuthRedirect from '../pages/AuthRedirect';
 
 const routes = [
 	{
@@ -35,6 +36,10 @@ const routes = [
 				<Profile />
 			</RequireAuth>
 		),
+	},
+	{
+		path: 'auth-redirect',
+		element: <AuthRedirect />,
 	},
 	{
 		path: '*',
