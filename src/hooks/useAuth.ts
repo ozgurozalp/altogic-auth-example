@@ -16,13 +16,16 @@ export default function useAuth() {
 
 		if (errors) {
 			setError(errors);
-			return false;
+			return { success: false };
 		}
 
 		setUser(user);
 		setSession(session);
 
-		return true;
+		return {
+			success: true,
+			isVerifyRequired: !session,
+		};
 	}
 
 	async function login(email: string, password: string) {
@@ -33,13 +36,13 @@ export default function useAuth() {
 
 		if (errors) {
 			setError(errors);
-			return false;
+			return { success: false };
 		}
 
 		setUser(user);
 		setSession(session);
 
-		return true;
+		return { success: true };
 	}
 
 	async function logout() {
@@ -50,13 +53,13 @@ export default function useAuth() {
 
 		if (errors) {
 			setError(errors);
-			return false;
+			return { success: false };
 		}
 
 		setUser(null);
 		setError(null);
 		setSession(null);
-		return true;
+		return { success: true };
 	}
 
 	return {
