@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import Container from '../components/Container';
 import PasswordUpdate from '../components/PasswordUpdate';
+import ActiveSessions from '../components/ActiveSessions';
 
 export default function Profile() {
 	const { logout, loading, user } = useAuth();
@@ -15,7 +16,7 @@ export default function Profile() {
 	};
 
 	return (
-		<Container className="p-4 grid items-baseline profile gap-4 grid-cols-3">
+		<Container className="p-4 grid items-baseline profile gap-4">
 			<Card className="flex flex-col welcome">
 				<h2 className="text-base sm:text-2xl md:text-4xl text-center">
 					Welcome <strong className="block">{user?.email} 👋</strong>
@@ -28,7 +29,7 @@ export default function Profile() {
 				<PasswordUpdate />
 			</Card>
 			<Card className="w-full allSessions">
-				<PasswordUpdate />
+				<ActiveSessions />
 			</Card>
 		</Container>
 	);
