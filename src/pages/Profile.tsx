@@ -15,8 +15,8 @@ export default function Profile() {
 	};
 
 	return (
-		<Container className="p-4 flex flex-col gap-4 justify-center items-center h-full">
-			<Card className="flex flex-col">
+		<Container className="p-4 grid items-baseline profile gap-4 grid-cols-3">
+			<Card className="flex flex-col welcome">
 				<h2 className="text-base sm:text-2xl md:text-4xl text-center">
 					Welcome <strong className="block">{user?.email} 👋</strong>
 				</h2>
@@ -24,8 +24,11 @@ export default function Profile() {
 					{loading ? 'Processing...' : 'Logout'}
 				</Button>
 			</Card>
-			<Card className="flex flex-col">
-				<PasswordUpdate className="px-0" />
+			<Card className="w-full passwordChange">
+				<PasswordUpdate />
+			</Card>
+			<Card className="w-full allSessions">
+				<PasswordUpdate />
 			</Card>
 		</Container>
 	);
