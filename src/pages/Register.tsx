@@ -1,7 +1,9 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import ShowError from '../components/ShowError';
+import Input from '../components/Input';
 
 export default function Register() {
 	const email = useRef<HTMLInputElement>(null);
@@ -16,15 +18,6 @@ export default function Register() {
 	const passwordID = useId();
 	const passwordConfID = useId();
 
-	useEffect(() => {
-		email?.current?.focus();
-		document.body.style.overflow = 'hidden';
-
-		return () => {
-			document.body.style.overflow = 'auto';
-		};
-	}, []);
-
 	const onSubmitHandler = async (e: FormEvent) => {
 		e.preventDefault();
 		setPasswordError(null);
@@ -35,24 +28,29 @@ export default function Register() {
 			return;
 		}
 
-		const success = await register(email.current.value, password.current.value);
+		const { success, isVerifyRequired } = await register(
+			email.current.value,
+			password.current.value
+		);
+
+		if (isVerifyRequired) {
+			email.current.value = password.current.value = passwordConf.current.value = '';
+			return;
+		}
+
 		if (success) navigate('/profile');
 	};
 
 	return (
-		<div className="h-full flex flex-col items-center justify-center px-4 bg-gray-100">
+		<div className="h-full flex flex-col items-center justify-center px-4">
 			<form
 				className="bg-white grid gap-4 p-6 rounded w-full max-w-sm shadow-lg"
 				onSubmit={onSubmitHandler}
 			>
 				<h1 className="text-center text-2xl font-medium py-2">Join to The Club 🥳</h1>
-				{error && (
-					<div className="bg-red-500 text-white p-2">
-						{error.items.map((e, index) => (
-							<p key={index}>{e.message}</p>
-						))}
-					</div>
-				)}
+
+				<ShowError error={error} />
+
 				{passwordError && (
 					<div className="bg-red-500 text-white p-2">
 						<p>{passwordError}</p>
@@ -63,37 +61,19 @@ export default function Register() {
 					<label className="block text-sm mb-1 text-gray-700" htmlFor={emailID}>
 						Email
 					</label>
-					<input
-						className="rounded border-gray-400 focus:ring-2 focus:ring-gray-700 focus:border-gray-700"
-						id={emailID}
-						ref={email}
-						type="email"
-						required={true}
-					/>
+					<Input id={emailID} ref={email} type="email" required={true} />
 				</div>
 				<div className="input-group">
 					<label className="block text-sm mb-1 text-gray-700" htmlFor={passwordID}>
 						Password
 					</label>
-					<input
-						className="rounded border-gray-400 focus:ring-2 focus:ring-gray-700 focus:border-gray-700"
-						id={passwordID}
-						ref={password}
-						type="password"
-						required={true}
-					/>
+					<Input id={passwordID} ref={password} type="password" required={true} />
 				</div>
 				<div className="input-group">
 					<label className="block text-sm mb-1 text-gray-700" htmlFor={passwordConfID}>
 						Password Confirmation
 					</label>
-					<input
-						className="rounded border-gray-400 focus:ring-2 focus:ring-gray-700 focus:border-gray-700"
-						id={passwordConfID}
-						ref={passwordConf}
-						type="password"
-						required={true}
-					/>
+					<Input id={passwordConfID} ref={passwordConf} type="password" required={true} />
 				</div>
 				<button
 					className="px-4 py-2 border rounded border-gray-400 transition-all hover:border-gray-700 hover:ring-2 hover:ring-gray-700 text-gray-700 active:translate-y-1"
