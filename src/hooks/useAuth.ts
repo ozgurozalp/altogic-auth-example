@@ -76,6 +76,21 @@ export default function useAuth() {
 		return { success: true };
 	}
 
+	async function verifyToken() {
+		const token = new URLSearchParams(window.location.href).get('access_token');
+		if (!token) return;
+		const { user, session, errors } = await altogic.auth.getAuthGrant(token);
+
+		if (errors) {
+			setError(errors);
+			return (window.location.href = '/');
+		}
+
+		setUser(user);
+		setSession(session);
+		window.location.href = '/profile';
+	}
+
 	return {
 		user,
 		session,
@@ -85,5 +100,6 @@ export default function useAuth() {
 		logout,
 		register,
 		changePassword,
+		verifyToken,
 	};
 }
