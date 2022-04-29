@@ -12,3 +12,24 @@
 		@apply bg-gray-100;
 	}
 }
+
+
+@layer components {
+	.profile {
+		grid-template-areas:
+			"welcome welcome welcome"
+			"passwordChange emailChange allSessions";
+	}
+	.welcome {
+		grid-area: welcome;
+	}
+	.passwordChange {
+		grid-area: passwordChange;
+	}
+	.emailChange {
+		grid-area: emailChange;
+	}
+	.allSessions {
+		grid-area: allSessions;
+	}
+}
