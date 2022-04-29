@@ -14,10 +14,11 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 	const [hasChanged, setHasChanged] = useState<boolean>(false);
 	const [passwordError, setPasswordError] = useState<string | null>(null);
 
+	const { loading, changePassword, error } = useAuth();
+
 	const oldPasswordID = useId();
 	const newPasswordID = useId();
 	const newPasswordConfID = useId();
-	const { loading, changePassword, error } = useAuth();
 
 	const onSubmitHandler = async (e: FormEvent) => {
 		e.preventDefault();
@@ -25,7 +26,7 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 			return;
 
 		if (newPasswordRef.current.value !== newPasswordConfRef.current.value) {
-			setPasswordError('Passwords do not match');
+			setPasswordError('New passwords do not match');
 			return;
 		}
 
@@ -44,7 +45,7 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 	};
 
 	return (
-		<form className={`bg-white grid gap-4 p-6 ${className ?? ''}`} onSubmit={onSubmitHandler}>
+		<form className={`bg-white grid gap-4 ${className ?? ''}`} onSubmit={onSubmitHandler}>
 			<h2 className="text-center text-xl font-medium py-2">Change Password</h2>
 
 			<ShowError error={error} />
