@@ -9,8 +9,6 @@
 	}
 	body {
 		display: grid;
-	}
-	input:is([type='text'], [type='email'], [type='password'], [type='search']) {
-		width: 100%;
+		@apply bg-gray-100;
 	}
 }
