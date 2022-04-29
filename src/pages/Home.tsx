@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Button from '../components/Button';
 
@@ -7,12 +7,12 @@ export default function Home() {
 	const navigate = useNavigate();
 
 	const clickHandler = async () => {
-		const success = await logout();
+		const { success } = await logout();
 		if (success) navigate('/login');
 	};
 
 	return (
-		<div className="h-full flex flex-col gap-4 justify-center items-center bg-gray-100">
+		<div className="h-full flex flex-col gap-4 justify-center items-center">
 			<h1 className="text-5xl text-center">Welcome to Altogic Auth Sample</h1>
 			<div className="flex gap-2">
 				{user ? (
@@ -26,18 +26,12 @@ export default function Home() {
 					</>
 				) : (
 					<>
-						<Link
-							to="/login"
-							className="px-4 py-2 rounded border bg-white transition-all hover:border-gray-500"
-						>
+						<Button renderAs="a" to="/login">
 							Login
-						</Link>
-						<Link
-							to="/register"
-							className="px-4 py-2 rounded border bg-white transition-all hover:border-gray-500"
-						>
+						</Button>
+						<Button renderAs="a" to="/register">
 							Register
-						</Link>
+						</Button>
 					</>
 				)}
 			</div>
