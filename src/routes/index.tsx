@@ -5,6 +5,7 @@ import Profile from '../pages/Profile';
 import type { ReactElement } from 'react';
 import Home from '../pages/Home';
 import useAuth from '../hooks/useAuth';
+import NotFound from '../pages/NotFound';
 
 const routes = [
 	{
@@ -34,6 +35,10 @@ const routes = [
 				<Profile />
 			</RequireAuth>
 		),
+	},
+	{
+		path: '*',
+		element: <NotFound />,
 	},
 ];
 
