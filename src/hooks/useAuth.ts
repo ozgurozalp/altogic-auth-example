@@ -45,6 +45,20 @@ export default function useAuth() {
 		return { success: true };
 	}
 
+	async function changePassword(oldPassword: string, newPassword: string) {
+		setLoading(true);
+		setError(null);
+		const { errors } = await altogic.auth.changePassword(newPassword, oldPassword);
+		setLoading(false);
+
+		if (errors) {
+			setError(errors);
+			return { success: false };
+		}
+
+		return { success: true };
+	}
+
 	async function logout() {
 		setLoading(true);
 		setError(null);
@@ -70,5 +84,6 @@ export default function useAuth() {
 		login,
 		logout,
 		register,
+		changePassword,
 	};
 }
