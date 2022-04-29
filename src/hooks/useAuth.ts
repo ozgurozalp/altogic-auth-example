@@ -1,5 +1,5 @@
 import altogic from '../lib/altogic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { APIError, Session, User } from 'altogic/src/types';
 
 export default function useAuth() {
@@ -7,6 +7,12 @@ export default function useAuth() {
 	const [session, setSession] = useState<Session | null>(altogic.auth.getSession());
 	const [error, setError] = useState<APIError | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (error) {
+			console.log(error);
+		}
+	}, [error, session, user]);
 
 	async function register(email: string, password: string) {
 		setLoading(true);
@@ -59,9 +65,17 @@ export default function useAuth() {
 		return { success: true };
 	}
 
-	async function logout() {
+	async function logout(token?: string | undefined) {
 		setLoading(true);
 		setError(null);
+
+		if (token) {
+			const { errors } = await altogic.auth.signOut(token);
+			if (!errors) {
+				return { success: true };
+			}
+		}
+
 		const { errors } = await altogic.auth.signOut();
 		setLoading(false);
 
@@ -91,6 +105,22 @@ export default function useAuth() {
 		window.location.href = '/profile';
 	}
 
+	async function getAllSessions() {
+		const { sessions, errors } = await altogic.auth.getAllSessions();
+
+		if (errors) {
+			return {
+				success: false,
+				errors,
+			};
+		}
+
+		return {
+			success: true,
+			sessions,
+		};
+	}
+
 	return {
 		user,
 		session,
@@ -101,5 +131,6 @@ export default function useAuth() {
 		register,
 		changePassword,
 		verifyToken,
+		getAllSessions,
 	};
 }
