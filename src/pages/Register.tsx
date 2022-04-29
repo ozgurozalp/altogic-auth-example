@@ -10,6 +10,7 @@ export default function Register() {
 	const password = useRef<HTMLInputElement>(null);
 	const passwordConf = useRef<HTMLInputElement>(null);
 	const [passwordError, setPasswordError] = useState<string | null>(null);
+	const [isShowNotify, setIsShowNotify] = useState<boolean>(false);
 
 	const { register, loading, error } = useAuth();
 	const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function Register() {
 		);
 
 		if (isVerifyRequired) {
+			setIsShowNotify(true);
 			email.current.value = password.current.value = passwordConf.current.value = '';
 			return;
 		}
@@ -48,7 +50,12 @@ export default function Register() {
 				onSubmit={onSubmitHandler}
 			>
 				<h1 className="text-center text-2xl font-medium py-2">Join to The Club 🥳</h1>
-
+				{isShowNotify && (
+					<div className="bg-green-500 p-2 text-white text-center">
+						Your account has been created. Please check your email to verify your
+						account.
+					</div>
+				)}
 				<ShowError error={error} />
 
 				{passwordError && (
