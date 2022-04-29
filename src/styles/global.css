@@ -18,7 +18,7 @@
 	.profile {
 		grid-template-areas:
 			"welcome welcome welcome"
-			"passwordChange emailChange allSessions";
+			"passwordChange allSessions allSessions";
 	}
 	.welcome {
 		grid-area: welcome;
