@@ -11,7 +11,7 @@ const Input = forwardRef(
 		<input
 			ref={ref}
 			type={type}
-			className={`rounded border-gray-400 focus:ring-2 focus:ring-gray-700 focus:border-gray-700 ${
+			className={`rounded border-gray-400 focus:ring-2 focus:ring-gray-700 focus:border-gray-700 w-full ${
 				className ?? ''
 			}`}
 			{...props}
