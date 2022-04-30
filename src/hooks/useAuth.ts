@@ -1,5 +1,5 @@
 import altogic from '../lib/altogic';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { APIError, Session, User } from 'altogic/src/types';
 
 export default function useAuth() {
@@ -7,12 +7,6 @@ export default function useAuth() {
 	const [session, setSession] = useState<Session | null>(altogic.auth.getSession());
 	const [error, setError] = useState<APIError | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
-
-	useEffect(() => {
-		if (error) {
-			console.log(error);
-		}
-	}, [error, session, user]);
 
 	async function register(email: string, password: string) {
 		setLoading(true);
@@ -52,10 +46,8 @@ export default function useAuth() {
 	}
 
 	async function changePassword(oldPassword: string, newPassword: string) {
-		setLoading(true);
 		setError(null);
 		const { errors } = await altogic.auth.changePassword(newPassword, oldPassword);
-		setLoading(false);
 
 		if (errors) {
 			setError(errors);
@@ -66,9 +58,7 @@ export default function useAuth() {
 	}
 
 	async function logout(token?: string | undefined) {
-		setLoading(true);
 		setError(null);
-
 		if (token) {
 			const { errors } = await altogic.auth.signOut(token);
 			if (!errors) {
@@ -77,7 +67,6 @@ export default function useAuth() {
 		}
 
 		const { errors } = await altogic.auth.signOut();
-		setLoading(false);
 
 		if (errors) {
 			setError(errors);
