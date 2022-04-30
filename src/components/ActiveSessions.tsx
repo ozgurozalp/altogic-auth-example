@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import useAuth from '../hooks/useAuth';
 import Button from './Button';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Session } from 'altogic';
 
 interface ActiveSessionsProps {
@@ -12,7 +12,7 @@ export default function ActiveSessions({ className }: ActiveSessionsProps) {
 	const [sessions, setSessions] = useState<Session[] | null>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string>('');
-	const { getAllSessions, logout } = useAuth();
+	const { getAllSessions, logout, session } = useAuth();
 
 	useEffect(() => {
 		setLoading(true);
@@ -22,6 +22,11 @@ export default function ActiveSessions({ className }: ActiveSessionsProps) {
 			setLoading(false);
 		});
 	}, []);
+
+	const _sessions = useMemo(() => {
+		if (!sessions) return [];
+		return sessions?.filter(_session => _session.token !== session?.token);
+	}, [sessions]);
 
 	const clickHandle = async (token: string | undefined) => {
 		const { success } = await logout(token);
@@ -37,24 +42,31 @@ export default function ActiveSessions({ className }: ActiveSessionsProps) {
 			) : (
 				<>
 					<h2 className="text-center text-xl font-medium py-2">All Sessions</h2>
-					{sessions.map(session => (
-						<div
-							key={session.token}
-							className="flex items-center justify-between border p-4"
-						>
-							<div>
+					{_sessions?.length > 0 ? (
+						_sessions?.map(session => (
+							<div
+								key={session.token}
+								className="flex items-center justify-between border p-4"
+							>
 								<div>
-									Device: <strong>{session.userAgent.family}</strong>
+									<div>
+										Device: <strong>{session.userAgent.family}</strong>
+									</div>
+									<time className="text-gray-600 text-xs">
+										{format(
+											new Date(session.creationDtm),
+											'yyyy-MM-dd HH:mm:ss'
+										)}
+									</time>
 								</div>
-								<time className="text-gray-600 text-xs">
-									{format(new Date(session.creationDtm), 'yyyy-MM-dd HH:mm:ss')}
-								</time>
+								<Button onClick={() => clickHandle(session.token)}>
+									Logout from this
+								</Button>
 							</div>
-							<Button onClick={() => clickHandle(session.token)}>
-								Logout from this
-							</Button>
-						</div>
-					))}
+						))
+					) : (
+						<span className="text-gray-600 text-center text-xs">No session found</span>
+					)}
 				</>
 			)}
 		</div>
