@@ -13,8 +13,9 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 	const newPasswordConfRef = useRef<HTMLInputElement>(null);
 	const [hasChanged, setHasChanged] = useState<boolean>(false);
 	const [passwordError, setPasswordError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const { loading, changePassword, error } = useAuth();
+	const { changePassword, error } = useAuth();
 
 	const oldPasswordID = useId();
 	const newPasswordID = useId();
@@ -30,6 +31,7 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 			return;
 		}
 
+		setIsLoading(true);
 		const { success } = await changePassword(
 			oldPasswordRef.current.value,
 			newPasswordRef.current.value
@@ -42,6 +44,7 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 				newPasswordConfRef.current.value =
 					'';
 		}
+		setIsLoading(false);
 	};
 
 	return (
@@ -88,9 +91,9 @@ export default function PasswordUpdate({ className }: PasswordUpdateProps) {
 			<button
 				className="px-4 py-2 border rounded border-gray-400 transition-all hover:border-gray-700 hover:ring-2 hover:ring-gray-700 text-gray-700 active:translate-y-1"
 				type="submit"
-				disabled={loading}
+				disabled={isLoading}
 			>
-				{loading ? 'Processing...' : 'Change'}
+				{isLoading ? 'Processing...' : 'Change'}
 			</button>
 		</form>
 	);
