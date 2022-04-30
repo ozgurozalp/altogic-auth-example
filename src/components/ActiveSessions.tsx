@@ -24,9 +24,9 @@ export default function ActiveSessions({ className }: ActiveSessionsProps) {
 	}, []);
 
 	const clickHandle = async (token: string | undefined) => {
-		console.log(token);
 		const { success } = await logout(token);
-		console.log(success);
+		const leftSessions = sessions?.filter(session => session.token !== token) as Session[];
+		if (success) setSessions(leftSessions);
 	};
 
 	if (!sessions) return null;
