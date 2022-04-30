@@ -1,12 +1,29 @@
 import altogic from '../lib/altogic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { APIError, Session, User } from 'altogic/src/types';
+import { useNavigate } from 'react-router-dom';
 
 export default function useAuth() {
 	const [user, setUser] = useState<User | null>(altogic.auth.getUser());
 	const [session, setSession] = useState<Session | null>(altogic.auth.getSession());
 	const [error, setError] = useState<APIError | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (
+			error?.items.some(item =>
+				['missing_session_token', 'invalid_session_token'].includes(item.code)
+			)
+		) {
+			setUser(null);
+			setSession(null);
+			setError(null);
+			setLoading(false);
+			return navigate('/login');
+		}
+	}, [error]);
 
 	async function register(email: string, password: string) {
 		setLoading(true);
@@ -85,19 +102,19 @@ export default function useAuth() {
 		const { user, session, errors } = await altogic.auth.getAuthGrant(token);
 
 		if (errors) {
-			setError(errors);
-			return (window.location.href = '/');
+			return navigate('/');
 		}
 
 		setUser(user);
 		setSession(session);
-		window.location.href = '/profile';
+		navigate('/profile');
 	}
 
 	async function getAllSessions() {
 		const { sessions, errors } = await altogic.auth.getAllSessions();
 
 		if (errors) {
+			setError(errors);
 			return {
 				success: false,
 				errors,
