@@ -11,13 +11,12 @@ interface ActiveSessionsProps {
 export default function ActiveSessions({ className }: ActiveSessionsProps) {
 	const [sessions, setSessions] = useState<Session[] | null>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const [error, setError] = useState<string>('');
 	const { getAllSessions, logout, session } = useAuth();
 
 	useEffect(() => {
 		setLoading(true);
 		getAllSessions().then(res => {
-			if (res.errors) return setError("Can't get sessions");
+			if (res.errors) return;
 			if (res.success) setSessions(res.sessions);
 			setLoading(false);
 		});
