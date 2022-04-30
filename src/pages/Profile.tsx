@@ -7,7 +7,7 @@ import PasswordUpdate from '../components/PasswordUpdate';
 import ActiveSessions from '../components/ActiveSessions';
 
 export default function Profile() {
-	const { logout, loading, user } = useAuth();
+	const { logout, user } = useAuth();
 	const navigate = useNavigate();
 
 	const clickHandler = async () => {
@@ -22,7 +22,7 @@ export default function Profile() {
 					Welcome <strong className="block">{user?.email} 👋</strong>
 				</h2>
 				<Button className="mt-4 self-center" onClick={clickHandler}>
-					{loading ? 'Processing...' : 'Logout'}
+					Logout
 				</Button>
 			</Card>
 			<Card className="w-full passwordChange">
